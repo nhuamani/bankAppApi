@@ -38,6 +38,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteById(UUID id) {
-
+        customerRepository.deleteById(id);
     }
 }
