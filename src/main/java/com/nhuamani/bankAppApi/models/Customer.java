@@ -23,7 +23,7 @@ public class Customer {
     @Column(name = "lastname", length = 50)
     private String lastName;
     @Column(unique = true, length = 8)
-    @Pattern(regexp = "^[0-9]{8}")
+    @Pattern(message = "DNI is not valid, ", regexp = "^[0-9]{8}")
     private String dni;
     @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$",
             flags = Pattern.Flag.CASE_INSENSITIVE)
