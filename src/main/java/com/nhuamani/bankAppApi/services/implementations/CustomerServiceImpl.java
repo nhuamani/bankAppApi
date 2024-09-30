@@ -33,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer updateById(Customer customer) {
-        return null;
+        return customerRepository.save(customer);
     }
 
     @Override

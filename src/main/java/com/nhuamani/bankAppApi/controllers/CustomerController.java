@@ -38,4 +38,14 @@ public class CustomerController {
         customerService.create(customer);
         return new ResponseEntity<Customer>(HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public Customer updateCustomer(@PathVariable("id") UUID id, @Valid @RequestBody Customer customer){
+        Customer dbcustomer =  customerService.getById(id).orElseThrow(() -> new ModelNotFoundException("Estudiante No enocntrado"));
+        dbcustomer.setFirstName(customer.getFirstName());
+        dbcustomer.setLastName(customer.getLastName());
+        dbcustomer.setDni(customer.getDni());
+        dbcustomer.setEmailAddress(customer.getEmailAddress());
+        return customerService.updateById(dbcustomer);
+    }
 }
