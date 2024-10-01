@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CustomerService {
-
     public List<Customer> getAll();
     public Optional<Customer> getById(UUID id);
     public Customer create(Customer customer);
