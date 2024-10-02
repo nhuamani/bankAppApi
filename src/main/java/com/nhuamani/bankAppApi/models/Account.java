@@ -14,7 +14,7 @@ public class Account {
     private UUID id;
     @Column(unique = true)
     private String accountNumber;
-    private boolean status = true;
+    private Boolean status = true;
     private double balance;
     @Enumerated(EnumType.STRING)
     private EType accountType;

@@ -33,11 +33,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account updateById(Account account) {
-        return null;
+        return accountRepository.save(account);
     }
 
     @Override
     public void deleteById(UUID id) {
-
+        accountRepository.deleteById(id);
     }
 }

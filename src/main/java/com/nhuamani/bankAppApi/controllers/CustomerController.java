@@ -41,7 +41,7 @@ public class CustomerController {
 
     @PutMapping("/{id}")
     public Customer updateCustomer(@PathVariable("id") UUID id, @Valid @RequestBody Customer customer) {
-        Customer dbcustomer =  customerService.getById(id).orElseThrow(() -> new ModelNotFoundException("Customer not found"));
+        Customer dbcustomer = customerService.getById(id).orElseThrow(() -> new ModelNotFoundException("Customer not found"));
         dbcustomer.setFirstName(customer.getFirstName());
         dbcustomer.setLastName(customer.getLastName());
         dbcustomer.setDni(customer.getDni());
@@ -51,7 +51,7 @@ public class CustomerController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Customer> deleteCustomer(@PathVariable("id") UUID id) {
-        Customer customer = customerService.getById(id).orElseThrow(() -> new ModelNotFoundException("User not found"));
+        Customer customer = customerService.getById(id).orElseThrow(() -> new ModelNotFoundException("Customer not found"));
         customerService.deleteById(customer.getId());
         return ResponseEntity.noContent().build();
     }
