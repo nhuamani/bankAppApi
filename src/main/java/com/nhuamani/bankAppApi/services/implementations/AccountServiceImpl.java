@@ -28,7 +28,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account create(Account account) {
-        return null;
+        return accountRepository.save(account);
     }
 
     @Override
