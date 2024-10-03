@@ -17,7 +17,7 @@ public class Account {
     private Boolean status = true;
     private double balance;
     @Enumerated(EnumType.STRING)
-    private EType accountType;
+    private EType accountType = EType.AHORROS;
     private String customerId;
 
 }

@@ -2,8 +2,8 @@ package com.nhuamani.bankAppApi.controllers;
 
 import com.nhuamani.bankAppApi.exceptions.ModelNotFoundException;
 import com.nhuamani.bankAppApi.models.Account;
-import com.nhuamani.bankAppApi.models.Customer;
 import com.nhuamani.bankAppApi.services.AccountService;
+import com.nhuamani.bankAppApi.utils.GenerateAccountNumber;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +36,8 @@ public class AccountController {
 
     @PostMapping()
     public ResponseEntity<Account> createAccount(@Valid @RequestBody Account account) {
+        String accountNumber = GenerateAccountNumber.accountNumber();
+        account.setAccountNumber(accountNumber);
         accountService.create(account);
         return new ResponseEntity<Account>(HttpStatus.CREATED);
     }
