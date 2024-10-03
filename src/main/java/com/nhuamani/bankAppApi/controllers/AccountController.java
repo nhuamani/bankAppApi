@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +39,7 @@ public class AccountController {
     public ResponseEntity<Account> createAccount(@Valid @RequestBody Account account) {
         String accountNumber = GenerateAccountNumber.accountNumber();
         account.setAccountNumber(accountNumber);
+        account.setBalance(0);
         accountService.create(account);
         return new ResponseEntity<Account>(HttpStatus.CREATED);
     }
@@ -48,7 +50,7 @@ public class AccountController {
         dbaccount.setAccountNumber(account.getAccountNumber());
         dbaccount.setAccountType(account.getAccountType());
         dbaccount.setStatus(account.getStatus());
-        dbaccount.setBalance(account.getBalance());
+        dbaccount.setBalance(0);
         dbaccount.setCustomerId(account.getCustomerId());
         return accountService.updateById(dbaccount);
     }
@@ -58,5 +60,22 @@ public class AccountController {
         Account account = accountService.getById(id).orElseThrow(() -> new ModelNotFoundException("Account not found"));
         accountService.deleteById(account.getId());
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{idAccount}/deposit")
+    public Account depositToAccount(@PathVariable("idAccount") UUID id, @Valid @RequestBody Account account) {
+        Account dbaccount = accountService.getById(id).orElseThrow(() -> new ModelNotFoundException("Account not found"));
+
+        if(!dbaccount.getStatus()) throw new ModelNotFoundException("account is not active");
+
+        DecimalFormat df = new DecimalFormat("#.00");
+        double total = Double.parseDouble(df.format(dbaccount.getBalance() + account.getBalance()));
+
+        dbaccount.setAccountNumber(dbaccount.getAccountNumber());
+        dbaccount.setAccountType(dbaccount.getAccountType());
+        dbaccount.setStatus(dbaccount.getStatus());
+        dbaccount.setBalance(total);
+        dbaccount.setCustomerId(dbaccount.getCustomerId());
+        return accountService.updateById(dbaccount);
     }
 }
