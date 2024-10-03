@@ -1,2 +1,1 @@
-https://medium.com/oracledevs/spring-data-jdbc-with-the-oracle-database-23c-for-java-developers-getting-started-guide-1c4640fc8d27
-https://jugnicaragua.org/construir-una-aplicacion-rest-con-spring-boot-y-base-de-datos-oracle-ejecutada-desde-docker/
+
