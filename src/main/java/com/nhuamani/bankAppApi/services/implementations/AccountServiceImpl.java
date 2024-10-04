@@ -40,4 +40,14 @@ public class AccountServiceImpl implements AccountService {
     public void deleteById(UUID id) {
         accountRepository.deleteById(id);
     }
+
+    @Override
+    public Account depositById(Account account) {
+        return accountRepository.save(account);
+    }
+
+    @Override
+    public Account withdrawById(Account account) {
+        return accountRepository.save(account);
+    }
 }
