@@ -42,7 +42,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account deposit(Account account) {
+    public Account depositById(Account account) {
+        return accountRepository.save(account);
+    }
+
+    @Override
+    public Account withdrawById(Account account) {
         return accountRepository.save(account);
     }
 }

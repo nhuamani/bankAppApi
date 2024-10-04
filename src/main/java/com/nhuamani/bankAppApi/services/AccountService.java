@@ -12,5 +12,6 @@ public interface AccountService {
     public Account create(Account account);
     public Account updateById(Account account);
     public void deleteById(UUID id);
-    public Account deposit(Account account);
+    public Account depositById(Account account);
+    public Account withdrawById(Account account);
 }

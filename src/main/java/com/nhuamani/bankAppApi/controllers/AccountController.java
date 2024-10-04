@@ -2,6 +2,7 @@ package com.nhuamani.bankAppApi.controllers;
 
 import com.nhuamani.bankAppApi.exceptions.ModelNotFoundException;
 import com.nhuamani.bankAppApi.models.Account;
+import com.nhuamani.bankAppApi.models.enums.EType;
 import com.nhuamani.bankAppApi.services.AccountService;
 import com.nhuamani.bankAppApi.utils.GenerateAccountNumber;
 import jakarta.validation.Valid;
@@ -68,14 +69,39 @@ public class AccountController {
 
         if(!dbaccount.getStatus()) throw new ModelNotFoundException("account is not active");
 
-        DecimalFormat df = new DecimalFormat("#.00");
-        double total = Double.parseDouble(df.format(dbaccount.getBalance() + account.getBalance()));
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        double total = Double.parseDouble(decimalFormat.format(dbaccount.getBalance() + account.getBalance()));
 
         dbaccount.setAccountNumber(dbaccount.getAccountNumber());
         dbaccount.setAccountType(dbaccount.getAccountType());
         dbaccount.setStatus(dbaccount.getStatus());
         dbaccount.setBalance(total);
         dbaccount.setCustomerId(dbaccount.getCustomerId());
+        return accountService.updateById(dbaccount);
+    }
+
+    @PutMapping("/{idAccount}/withdraw")
+    public Account withdrawFromAccount(@PathVariable("idAccount") UUID id, @Valid @RequestBody Account account) {
+        Account dbaccount = accountService.getById(id).orElseThrow(() -> new ModelNotFoundException("Account not found"));
+
+        if(!dbaccount.getStatus()) throw new ModelNotFoundException("account is not active");
+
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        if(dbaccount.getAccountType() == EType.AHORROS && dbaccount.getBalance() > 0 && dbaccount.getBalance() >= account.getBalance()) {
+            double total = Double.parseDouble(decimalFormat.format(dbaccount.getBalance() - account.getBalance()));
+            dbaccount.setBalance(total);
+        } else if (dbaccount.getAccountType() == EType.CORRIENTE && dbaccount.getBalance() > -500) {
+            double total = Double.parseDouble(decimalFormat.format(dbaccount.getBalance() - account.getBalance()));
+            dbaccount.setBalance(total);
+        } else {
+            throw new ModelNotFoundException("Client does not have a checking or savings account");
+        }
+
+        dbaccount.setAccountNumber(dbaccount.getAccountNumber());
+        dbaccount.setAccountType(dbaccount.getAccountType());
+        dbaccount.setStatus(dbaccount.getStatus());
+        dbaccount.setCustomerId(dbaccount.getCustomerId());
+
         return accountService.updateById(dbaccount);
     }
 }
